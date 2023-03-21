@@ -1,0 +1,35 @@
+name: Build
+
+on:
+  push:
+    branches:
+    - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install build-essential devscripts debhelper dh-make
+    
+    - name: Get version and set filename
+      run: |
+        VERSION=$(grep "^Version" ./DEBIAN/control | awk '{print $2}')
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "DEB_FILENAME=cmdgpt_${VERSION}_all.deb" >> $GITHUB_ENV
+
+    - name: Build Debian package
+      run: dpkg-deb --build . $DEB_FILENAME
+
+    - name: Upload Linux package
+      uses: actions/upload-artifact@v3
+      with:
+        name: CMDGPT
+        path: ./*.deb
