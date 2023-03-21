@@ -35,7 +35,7 @@ jobs:
         path: ./*.deb
 
     - name: Publish Linux package
-      uses: softprops/action-gh-release@v3
+      uses: softprops/action-gh-release@v1
       with:
         files: './*.deb'
       env:
