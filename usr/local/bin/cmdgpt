@@ -141,7 +141,7 @@ def set_openai_key(api_key):
         shell_name = "bash"
     rc_file = f"{user_home}/.{shell_name}rc"
     found_flag = False
-    with open(rc_file, "w+") as file:
+    with open(rc_file, "r+") as file:
         lines = file.readlines()
         for i in range(len(lines)):
             if "export MY_VAR=" in lines[i]:
