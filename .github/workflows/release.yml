@@ -4,39 +4,51 @@ on:
   release:
     types:
       - created
-  workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  deploy:
 
+    runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
+    - name: Check out repository
       uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
 
     - name: Install dependencies
       run: |
-        sudo apt-get update
-        sudo apt-get install build-essential devscripts debhelper dh-make
+        python -m pip install --upgrade pip
+        pip install setuptools wheel twine
 
-    - name: Get version and set filename
-      run: |
-        VERSION=$(grep "^Version" ./DEBIAN/control | awk '{print $2}')
-        echo "VERSION=$VERSION" >> $GITHUB_ENV
-        echo "DEB_FILENAME=cmdgpt_${VERSION}.deb" >> $GITHUB_ENV
+    - name: Build package
+      run: python setup.py sdist bdist_wheel
 
-    - name: Build Debian package
-      run: dpkg-deb --build . $DEB_FILENAME
-
-    - name: Upload Linux package
-      uses: actions/upload-artifact@v3
-      with:
-        name: CMDGPT
-        path: ./*.deb
-
-    - name: Publish Linux package
-      uses: softprops/action-gh-release@v1
-      with:
-        files: './*.deb'
+    - name: Publish package to PyPI
       env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        TWINE_USERNAME: ${{ secrets.PYPI_USER }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_PSWD }}
+      run: |
+        twine upload -u TWINE_USERNAME -p TWINE_PASSWORD dist/*
+
+    - name: Upload .tar.gz to GitHub release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: dist/cmdgpt-${{ github.event.release.tag_name }}.tar.gz
+        asset_name: cmdgpt-${{ github.event.release.tag_name }}.tar.gz
+        asset_content_type: application/gzip
+
+    - name: Upload .whl to GitHub release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: dist/cmdgpt-${{ github.event.release.tag_name }}-py3-none-any.whl
+        asset_name: cmdgpt-${{ github.event.release.tag_name }}-py3-none-any.whl
+        asset_content_type: application/zip

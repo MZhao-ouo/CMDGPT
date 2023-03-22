@@ -10,8 +10,7 @@ A CLI tool to interact with GPT-3.5-turbo
 ## Install
 
 ```sh
-wget https://github.com/MZhao-ouo/CMDGPT/releases/latest/download/cmdgpt_0.1.deb
-sudo dpkg -i cmdgpt_0.1.deb
+pip install cmdgpt
 ```
 
 ## Usage
@@ -23,5 +22,15 @@ cmdgpt --set_key "sk-xxx……xxx"
 
 **Provide a command:**
 ```sh
-cmdgpt "create a folder named "www" with a file named "index.html" inside"
+cmdgpt "create a folder named 'www' with a file named 'index.html' inside"
 ```
+**If `command not found: cmdgpt`**
+
+Add the following line to your `~/.bashrc` or `~/.zshrc` file:
+```sh
+export PATH=$PATH:~/.local/bin
+```
+Then run `source ~/.bashrc` or `source ~/.zshrc` to reload the file.
+
+**Known issues:**
+- [ ] `ERROR:root:Error: 'content'`
