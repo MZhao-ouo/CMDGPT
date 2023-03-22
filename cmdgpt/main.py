@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-import sys, json, os, logging, argparse, platform
-import requests, getch
+import sys, json, os, logging, argparse, platform, json
+import requests
 from colorama import Fore, Style
 from .utils import *
 
 parser = argparse.ArgumentParser(description="description")
 parser.add_argument("query", nargs="?", help="Describe the command you want.", default=None)
-parser.add_argument("--set_key", type=str, help="api_key", required=False)
+parser.add_argument("--set_key", type=str, help="api_key", required=False, default=None)
 parser.add_argument('--debug', action='store_true', help='enable debug mode')
 args = parser.parse_args()
 
@@ -66,7 +66,20 @@ Never explain what you are doing.
 
 It must be strictly outputted according to the above requirements.
 """
+try:
+    with open(f"{user_home}/.cmdgpt_conf", "r", encoding="utf-8") as f:
+        cmdgpt_conf = json.load(f)
+except Exception as e:
+    with open(f"{user_home}/.cmdgpt_conf", "w+", encoding="utf-8") as f:
+        cmdgpt_conf = {"openai_api_key": ""}
+        json.dump(cmdgpt_conf, f)
 
+if cmdgpt_conf["openai_api_key"]=="" and args.set_key==None:
+    print("Please set your OpenAI API key first.")
+    print("You can get it from https://beta.openai.com/account/api-keys")
+    print("Then run the following command:")
+    print("cmdgpt --set_key YOUR_API_KEY")
+    sys.exit(0)
 
 def try_exec(response_contents):
     cmd = ""
@@ -82,7 +95,7 @@ def try_exec(response_contents):
         print("It is a multi-line command. Please execute it manually.")
         return
     while True:
-        pressed_key = getch.getch().lower()
+        pressed_key = get_key().lower()
         if pressed_key == "y":
             os.system(cmd)
             break
@@ -105,7 +118,7 @@ def prepare_prompt():
 def get_response(prompt, pre_prompt, model="gpt-3.5-turbo-0301", temperature=0):
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}"
+        "Authorization": f"Bearer {cmdgpt_conf['openai_api_key']}"
     }
     payload = {
         "model": model,
@@ -140,25 +153,9 @@ def decode_response(response):
                 
 
 def set_openai_key(api_key):
-    if "zsh" in current_shell:
-        shell_name = "zsh"
-    else:
-        shell_name = "bash"
-    rc_file = f"{user_home}/.{shell_name}rc"
-    found_flag = False
-    with open(rc_file, "r+") as file:
-        lines = file.readlines()
-        for i in range(len(lines)):
-            if "export OPENAI_API_KEY=" in lines[i]:
-                lines[i] = f"export OPENAI_API_KEY={api_key}\n"
-                found_flag = True
-                break
-        if not found_flag:
-            lines.append(f"export OPENAI_API_KEY={api_key}\n")
-        file.seek(0)
-        file.truncate()
-        file.writelines(lines)
-    print(f"Please manually execute `source ~/.{shell_name}rc` or restart terminal to take effect.")
+    cmdgpt_conf["openai_api_key"] = api_key
+    with open(f"{user_home}/.cmdgpt_conf", "w+") as f:
+        json.dump(cmdgpt_conf, f)
 
 
 def main():

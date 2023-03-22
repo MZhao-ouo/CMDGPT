@@ -7,7 +7,7 @@ with open(Path(__file__).absolute().parents[0] / "cmdgpt" / "VERSION") as _f:
 with open("README.md", "r", encoding="utf-8") as f:
     long_description = f.read()
 
-install_requires = ["requests", "getch"]
+install_requires = ["requests"]
 
 setup(
     name="cmdgpt",
