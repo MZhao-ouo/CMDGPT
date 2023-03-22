@@ -70,7 +70,7 @@ It must be strictly outputted according to the above requirements.
 
 def try_exec(response_contents):
     cmd = ""
-    print(f"CMDGPT: Do you want to execute the command? (y/n):")
+    print(f"CMDGPT: Do you want to execute the following command? (y/n):")
     for chunk in response_contents:
         print(Fore.YELLOW + chunk + Style.RESET_ALL, end="", flush=True)
         cmd += chunk
@@ -78,11 +78,15 @@ def try_exec(response_contents):
     if "MZHAO" in cmd:
         print("Please provide a valuable description.")
         return
+    if "\n" in cmd:
+        print("It is a multi-line command. Please execute it manually.")
+        return
     while True:
-        if getch.getch() == "y":
+        pressed_key = getch.getch().lower()
+        if pressed_key == "y":
             os.system(cmd)
             break
-        elif getch.getch() == "n":
+        elif pressed_key == "n":
             print("Canceled.")
             break
 
@@ -163,6 +167,7 @@ def main():
         print("\tcmdgpt <Your Purpose>")
         print("Arguments:")
         print("\t--set_key:\t set openai api key")
+        print("\t--debug:\t enable debug mode")
         exit()
     
     if args.query:
