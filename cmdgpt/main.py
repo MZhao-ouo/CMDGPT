@@ -131,7 +131,7 @@ def decode_response(response):
                 try:
                     yield chunk["choices"][0]["delta"]["content"]
                 except Exception as e:
-                    logging.error(f"Error: {e}")
+                    # logging.error(f"Error: {e}")
                     continue
                 
 
