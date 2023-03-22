@@ -1,18 +1,25 @@
 #!/usr/bin/env python3
-import sys, requests, json, os, termios, tty, logging, argparse
+import sys, json, os, logging, argparse, platform
+import requests, getch
+from colorama import Fore, Style
+from .utils import *
 
-logging.basicConfig(level=logging.CRITICAL)
+parser = argparse.ArgumentParser(description="description")
+parser.add_argument("query", nargs="?", help="Describe the command you want.", default=None)
+parser.add_argument("--set_key", type=str, help="api_key", required=False)
+parser.add_argument('--debug', action='store_true', help='enable debug mode')
+args = parser.parse_args()
+
+if args.debug:
+    logging.basicConfig(level=logging.DEBUG)
 
 def get_cmd_history():
     cmd_history = ""
-    if "zsh" in current_shell:
+    if "PowerShell" in current_shell:
+        return ""
+    elif "zsh" in current_shell:
         history_filename = os.path.join(user_home, ".zsh_history")
-        decoded_zsh_history_path = os.path.join(user_home, ".decoded_zsh_history")
-        decoded_zsh_path = os.path.join(current_directory, "cmdgpt-decodezsh")
-        os.system(f"{decoded_zsh_path} read < {history_filename} > {decoded_zsh_history_path}")
-        history_filename = decoded_zsh_history_path
-        with open(history_filename, "rt", errors="ignore") as f:
-            cmd_history_list = f.readlines()[-17:-1]
+        cmd_history_list = process_file(history_filename)[-17:-1]
         for _ in cmd_history_list:
             cmd_history += _[15:]
     else:
@@ -32,10 +39,10 @@ logging.info(f"Current directory: \n{current_directory}")
 user_home = os.path.expanduser("~")
 logging.info(f"User home: \n{user_home}")
 
-sys_info = os.uname()
+sys_info = f"{platform.system()} {platform.release()} {platform.version()} {platform.machine()}"
 logging.info(f"System info: \n{sys_info}")
 
-current_shell = os.environ["SHELL"]
+current_shell = "PowerShell" if platform.system() == "Windows" else os.environ["SHELL"]
 logging.info(f"Current shell: \n{current_shell}")
 
 cwd_path = os.getcwd()
@@ -60,31 +67,25 @@ Never explain what you are doing.
 It must be strictly outputted according to the above requirements.
 """
 
-def getch():
-    fd = sys.stdin.fileno()
-    old_settings = termios.tcgetattr(fd)
-    try:
-        tty.setraw(fd)
-        ch = sys.stdin.read(1)
-    finally:
-        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-    return ch
 
 def try_exec(response_contents):
     cmd = ""
     print(f"CMDGPT: Do you want to execute the command? (y/n):")
     for chunk in response_contents:
-        print(chunk, end="", flush=True)
+        print(Fore.YELLOW + chunk + Style.RESET_ALL, end="", flush=True)
         cmd += chunk
     print()
+    if "MZHAO" in cmd:
+        print("Please provide a valuable description.")
+        return
     while True:
-        key = getch().lower()
-        if key == "y":
+        if getch.getch() == "y":
             os.system(cmd)
             break
-        elif key == "n":
-            print("Abort")
+        elif getch.getch() == "n":
+            print("Canceled.")
             break
+
         
 
 def prepare_prompt():
@@ -144,7 +145,7 @@ def set_openai_key(api_key):
     with open(rc_file, "r+") as file:
         lines = file.readlines()
         for i in range(len(lines)):
-            if "export MY_VAR=" in lines[i]:
+            if "export OPENAI_API_KEY=" in lines[i]:
                 lines[i] = f"export OPENAI_API_KEY={api_key}\n"
                 found_flag = True
                 break
@@ -156,7 +157,7 @@ def set_openai_key(api_key):
     print(f"Please manually execute `source ~/.{shell_name}rc` or restart terminal to take effect.")
 
 
-if __name__ == "__main__":
+def main():
     if len(sys.argv) == 1:
         print("Usage:")
         print("\tcmdgpt <Your Purpose>")
@@ -164,17 +165,17 @@ if __name__ == "__main__":
         print("\t--set_key:\t set openai api key")
         exit()
     
-    if len(sys.argv) == 2:
-        prompt = sys.argv[1]
+    if args.query:
+        prompt = args.query
         pre_prompt = prepare_prompt()
         response = get_response(prompt, pre_prompt)
         response_contents = decode_response(response)
         try_exec(response_contents)
         exit()
         
-    parser = argparse.ArgumentParser(description="description")
-    parser.add_argument("--set_key", type=str, help="api_key", required=False)
-    args = parser.parse_args()
     if args.set_key:
         set_openai_key(args.set_key)
         exit()
+
+if __name__ == "__main__":
+    main()

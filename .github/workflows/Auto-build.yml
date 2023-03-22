@@ -1,35 +1,37 @@
-name: Build
+name: Auto-build
 
 on:
   push:
     branches:
-    - main
-  workflow_dispatch:
+      - main
+      - master
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Check out repository
       uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
 
     - name: Install dependencies
       run: |
-        sudo apt-get update
-        sudo apt-get install build-essential devscripts debhelper dh-make
-    
-    - name: Get version and set filename
-      run: |
-        VERSION=$(grep "^Version" ./DEBIAN/control | awk '{print $2}')
-        echo "VERSION=$VERSION" >> $GITHUB_ENV
-        echo "DEB_FILENAME=cmdgpt_${VERSION}_all.deb" >> $GITHUB_ENV
+        python -m pip install --upgrade pip
+        pip install setuptools wheel
 
-    - name: Build Debian package
-      run: dpkg-deb --build . $DEB_FILENAME
+    - name: Build package
+      run: python setup.py sdist bdist_wheel
 
-    - name: Upload Linux package
+    - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: CMDGPT
-        path: ./*.deb
+        name: build-results
+        path: |
+          dist/*.tar.gz
+          dist/*.whl

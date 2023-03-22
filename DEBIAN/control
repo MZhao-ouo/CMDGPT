@@ -1,9 +1,0 @@
-Package: cmdgpt
-Version: 0.1
-Section: utils
-Priority: optional
-Architecture: all
-Depends: python3, python3-requests
-Maintainer: MZhao Tong <mzhao.ouo@gmail.com>
-Description: A CLI tool to interact with GPT-3.5-turbo
-
