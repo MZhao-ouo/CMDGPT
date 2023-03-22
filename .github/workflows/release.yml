@@ -31,7 +31,7 @@ jobs:
         TWINE_USERNAME: ${{ secrets.PYPI_USER }}
         TWINE_PASSWORD: ${{ secrets.PYPI_PSWD }}
       run: |
-        twine upload -u TWINE_USERNAME -p TWINE_PASSWORD dist/*
+        twine upload -u $TWINE_USERNAME -p $TWINE_PASSWORD dist/*
 
     - name: Upload .tar.gz to GitHub release
       uses: actions/upload-release-asset@v1
