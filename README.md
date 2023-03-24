@@ -33,4 +33,4 @@ export PATH=$PATH:~/.local/bin
 Then run `source ~/.bashrc` or `source ~/.zshrc` to reload the file.
 
 **Known issues:**
-- [ ] `ERROR:root:Error: 'content'`
+- Commands such as `cd` and `source` cannot be used
