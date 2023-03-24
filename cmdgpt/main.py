@@ -7,6 +7,7 @@ from .utils import *
 parser = argparse.ArgumentParser(description="description")
 parser.add_argument("query", nargs="?", help="Describe the command you want.", default=None)
 parser.add_argument("--set_key", type=str, help="api_key", required=False, default=None)
+parser.add_argument("--usage", action="store_true", help="show OpenAI Usage")
 parser.add_argument('--debug', action='store_true', help='enable debug mode')
 args = parser.parse_args()
 
@@ -55,6 +56,8 @@ system_prompt = """
 You should act as a program.
 User will describe the operation they need, and you only need to reply with the corresponding command.
 User will provide their system information, and your reply should be compatible with their system.
+Your reply should be compatible with the current shell.
+Your reply is best as a single line command.
 You can only reply the corresponding command or "MZHAO".
 It is forbidden to reply with any other additional content.
 
@@ -85,13 +88,13 @@ if cmdgpt_conf["openai_api_key"]=="" and args.set_key==None:
 
 def try_exec(response_contents):
     cmd = ""
-    print(f"CMDGPT: Do you want to execute the following command? (y/n):")
+    print(f"{Fore.BLUE}CMDGPT:{Style.RESET_ALL} Do you want to execute the following command? (y/n):")
     for chunk in response_contents:
         print(Fore.YELLOW + chunk + Style.RESET_ALL, end="", flush=True)
         cmd += chunk
     print()
     if "MZHAO" in cmd:
-        print("Please provide a valuable description.")
+        print(Fore.RED + "Please provide a valuable description." + Style.RESET_ALL)
         return
     if "\n" in cmd:
         print("It is a multi-line command. Please execute it manually.")
@@ -156,6 +159,23 @@ def decode_response(response):
                     continue
                 
 
+def get_usage():
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {cmdgpt_conf['openai_api_key']}"
+    }
+    
+    response = requests.get("https://api.openai.com/dashboard/billing/credit_grants", headers=headers)
+    
+    if response.status_code == 200:
+        data = response.json()
+        total_used = data['total_used']
+        total_granted = data['total_granted']
+        print(f"You have used {Fore.YELLOW}{total_used}$/{total_granted}${Style.RESET_ALL}.")
+    else:
+        raise Exception(f"API request failed with status code {response.status_code}: {response.text}")
+                
+
 def set_openai_key(api_key):
     cmdgpt_conf["openai_api_key"] = api_key
     with open(cmdgpt_conf_path, "w+") as f:
@@ -167,7 +187,8 @@ def main():
         print("Usage:")
         print("\tcmdgpt <Your Purpose>")
         print("Arguments:")
-        print("\t--set_key:\t set openai api key")
+        print("\t--set_key:\t set OpenAI api key")
+        print("\t--usage:\t get OpenAI usage")
         print("\t--debug:\t enable debug mode")
         exit()
     
@@ -181,6 +202,10 @@ def main():
         
     if args.set_key:
         set_openai_key(args.set_key)
+        exit()
+        
+    if args.usage:
+        get_usage()
         exit()
 
 if __name__ == "__main__":
