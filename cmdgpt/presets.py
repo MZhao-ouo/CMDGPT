@@ -43,7 +43,7 @@ if os.path.exists(cmdgpt_conf_path):
     with open(cmdgpt_conf_path, "r", encoding="utf-8") as f:
         cmdgpt_conf = json.load(f)
 else:
-    init_conf(cmdgpt_conf_path)
+    cmdgpt_conf = init_conf(cmdgpt_conf_path)
 
 
 system_prompt = """

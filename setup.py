@@ -7,7 +7,7 @@ with open(Path(__file__).absolute().parents[0] / "cmdgpt" / "VERSION") as _f:
 with open("README.md", "r", encoding="utf-8") as f:
     long_description = f.read()
 
-install_requires = ["requests"]
+install_requires = ["requests", "colorama"]
 
 setup(
     name="cmdgpt",

@@ -5,6 +5,7 @@ def init_conf(cmdgpt_conf_path):
         cmdgpt_conf = {"openai_api_key": ""}
         cmdgpt_conf["apiurl"] = "https://api.openai.com/v1/chat/completions"
         json.dump(cmdgpt_conf, f)
+    return cmdgpt_conf
 
 def process_file(filename):
     with open(filename, 'rb') as file:
