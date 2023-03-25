@@ -1,12 +1,4 @@
-import os
-
-def show_help():
-    print("Usage:")
-    print("\tcmdgpt <Your Purpose>")
-    print("Arguments:")
-    print("\t--set_key:\t set OpenAI api key")
-    print("\t--usage:\t get OpenAI usage")
-    print("\t--debug:\t enable debug mode")
+from .presets import *
 
 def process_file(filename):
     with open(filename, 'rb') as file:
@@ -60,12 +52,10 @@ elif os.name == 'posix':  # Linux or macOS
 
     def get_key():
         fd = sys.stdin.fileno()
-
         old_settings = termios.tcgetattr(fd)
         try:
             tty.setraw(fd)
             ch = sys.stdin.read(1)
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-
         return ch
