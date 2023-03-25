@@ -11,7 +11,7 @@ def prepare_prompt():
     logging.info(f"Pre prompt: \n{pre_prompt}")
     return pre_prompt
 
-def get_chat_response(prompt, pre_prompt, model="gpt-3.5-turbo-0301", temperature=0):
+def get_chat_response(prompt, pre_prompt, model="gpt-3.5-turbo-0301", temperature=0, apiurl="https://api.openai.com/v1/chat/completions"):
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {cmdgpt_conf['openai_api_key']}"
@@ -26,7 +26,7 @@ def get_chat_response(prompt, pre_prompt, model="gpt-3.5-turbo-0301", temperatur
             {"role": "user", "content": prompt}
         ]
     }
-    return requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload, stream=True)
+    return requests.post(apiurl, headers=headers, json=payload, stream=True)
 
 def decode_chat_response(response):
     for chunk in response.iter_lines():

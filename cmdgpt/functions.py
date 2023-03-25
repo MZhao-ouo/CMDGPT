@@ -10,13 +10,14 @@ def show_help():
     print("\t--key:\t set OpenAI api key")
     print("\t--usage:\t get OpenAI usage")
     print("\t--apiurl:\t set OpenAI api url")
+    print("\t--reset_conf:\t reset the default configuration")
     print("\t--debug:\t enable debug mode")
     
 # execute query
 def exec_query(query):
     prompt = args.query
     pre_prompt = prepare_prompt()
-    response = get_chat_response(prompt, pre_prompt)
+    response = get_chat_response(prompt, pre_prompt, apiurl=cmdgpt_conf["apiurl"])
     response_contents = decode_chat_response(response)
     try_exec(response_contents)
 
@@ -55,3 +56,18 @@ def set_apiurl(apiurl):
     cmdgpt_conf["apiurl"] = apiurl
     with open(cmdgpt_conf_path, "w+") as f:
         json.dump(cmdgpt_conf, f)
+
+# reset configuration
+def reset_conf():
+    print("Do you want to reset the default configuration? (y/n):")
+    while True:
+        pressed_key = get_key()
+        if pressed_key:
+            pressed_key = pressed_key.lower()
+            if pressed_key == "y":
+                init_conf(cmdgpt_conf_path)
+                print("Reset the default configuration.")
+                return
+            elif pressed_key == "n":
+                print("Canceled.")
+                return

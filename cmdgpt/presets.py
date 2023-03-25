@@ -1,13 +1,14 @@
 import os, sys, json, logging, argparse, platform, json
 import requests
 from colorama import Fore, Style
-from .utils import get_cmd_history
+from .utils import get_cmd_history, init_conf
 
 parser = argparse.ArgumentParser(description="description")
 parser.add_argument("query", nargs="?", help="Describe the command you want.", default=None)
 parser.add_argument("--key", type=str, help="api_key", required=False, default=None)
 parser.add_argument("--usage", action="store_true", help="show OpenAI Usage")
 parser.add_argument("--apiurl", type=str, help="OpenAI API URL", required=False)
+parser.add_argument("--reset_conf", action="store_true", help="reset the default configuration")
 parser.add_argument('--debug', action='store_true', help='enable debug mode')
 args = parser.parse_args()
 
@@ -42,10 +43,7 @@ if os.path.exists(cmdgpt_conf_path):
     with open(cmdgpt_conf_path, "r", encoding="utf-8") as f:
         cmdgpt_conf = json.load(f)
 else:
-    with open(cmdgpt_conf_path, "w+", encoding="utf-8") as f:
-        cmdgpt_conf = {"openai_api_key": ""}
-        cmdgpt_conf["apiurl"] = "https://api.openai.com/v1/chat/completions"
-        json.dump(cmdgpt_conf, f)
+    init_conf(cmdgpt_conf_path)
 
 
 system_prompt = """

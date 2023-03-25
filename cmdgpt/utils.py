@@ -1,5 +1,11 @@
 from .presets import *
 
+def init_conf(cmdgpt_conf_path):
+    with open(cmdgpt_conf_path, "w+", encoding="utf-8") as f:
+        cmdgpt_conf = {"openai_api_key": ""}
+        cmdgpt_conf["apiurl"] = "https://api.openai.com/v1/chat/completions"
+        json.dump(cmdgpt_conf, f)
+
 def process_file(filename):
     with open(filename, 'rb') as file:
         change = False
