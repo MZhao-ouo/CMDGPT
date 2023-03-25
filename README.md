@@ -33,3 +33,4 @@ Then run `source ~/.bashrc` or `source ~/.zshrc` to reload the file.
 
 **Known issues:**
 - Commands such as `cd` and `source` cannot be used
+- CMDGPT on Windows only supports providing commands and cannot execute them.
