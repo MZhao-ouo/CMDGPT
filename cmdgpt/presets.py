@@ -9,6 +9,7 @@ parser.add_argument("--key", type=str, help="api_key", required=False, default=N
 parser.add_argument("--usage", action="store_true", help="show OpenAI Usage")
 parser.add_argument("--apiurl", type=str, help="OpenAI API URL", required=False)
 parser.add_argument("--reset_conf", action="store_true", help="reset the default configuration")
+parser.add_argument("--chat", action="store_true", help="chat with gpt-3.5")
 parser.add_argument('--debug', action='store_true', help='enable debug mode')
 args = parser.parse_args()
 

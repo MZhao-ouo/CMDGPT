@@ -11,6 +11,9 @@ def main():
     if len(sys.argv) == 1:
         show_help()
         exit()
+    if args.chat:
+        chat_ai()
+        exit()
     if args.reset_conf:
         reset_conf()
         exit()

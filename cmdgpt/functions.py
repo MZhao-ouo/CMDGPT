@@ -1,6 +1,7 @@
 from .presets import *
 from .openai_func import *
 from .utils import *
+import shutil
 
 # show help
 def show_help():
@@ -15,9 +16,12 @@ def show_help():
     
 # execute query
 def exec_query(query):
-    prompt = args.query
-    pre_prompt = prepare_prompt()
-    response = get_chat_response(prompt, pre_prompt, apiurl=cmdgpt_conf["apiurl"])
+    messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": prepare_prompt()},
+            {"role": "user", "content": args.query}
+        ]
+    response = get_chat_response(messages, apiurl=cmdgpt_conf["apiurl"])
     response_contents = decode_chat_response(response)
     try_exec(response_contents)
 
@@ -71,3 +75,23 @@ def reset_conf():
             elif pressed_key == "n":
                 print("Canceled.")
                 return
+
+# Chat with AI
+def chat_ai():
+    terminal_columns = shutil.get_terminal_size().columns
+    messages = [
+        {"role": "system", "content": "You are a helpful assistant."},
+    ]
+    while True:
+        print(f"===== User {(terminal_columns-11) * '='}")
+        prompt = input()
+        messages.append({"role": "user", "content": prompt})
+        print(f"===== AI {(terminal_columns-9) * '='}")
+        response = get_chat_response(messages, apiurl=cmdgpt_conf["apiurl"])
+        response_contents = decode_chat_response(response)
+        answer = ""
+        for chunk in response_contents:
+            print(f"{Fore.YELLOW}{chunk}{Style.RESET_ALL}", end="", flush=True)
+            answer += chunk
+        messages.append({"role": "assistant", "content": answer})
+        print()
