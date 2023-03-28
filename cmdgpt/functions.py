@@ -19,7 +19,7 @@ def exec_query(query):
     messages = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": prepare_prompt()},
-            {"role": "user", "content": args.query}
+            {"role": "user", "content": query}
         ]
     response = get_chat_response(messages, apiurl=cmdgpt_conf["apiurl"])
     response_contents = decode_chat_response(response)
@@ -86,12 +86,12 @@ def chat_ai():
         print(f"===== User {(terminal_columns-11) * '='}")
         prompt = input()
         messages.append({"role": "user", "content": prompt})
-        print(f"===== AI {(terminal_columns-9) * '='}")
+        print(f"{Fore.YELLOW}===== AI {(terminal_columns-9) * '='}")
         response = get_chat_response(messages, apiurl=cmdgpt_conf["apiurl"])
         response_contents = decode_chat_response(response)
         answer = ""
         for chunk in response_contents:
-            print(f"{Fore.YELLOW}{chunk}{Style.RESET_ALL}", end="", flush=True)
+            print(chunk, end="", flush=True)
             answer += chunk
         messages.append({"role": "assistant", "content": answer})
-        print()
+        print(Style.RESET_ALL)
