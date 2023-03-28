@@ -2,7 +2,7 @@
 
 <div align="right">
   <!-- 语言: -->
-  简体中文 | <a title="English" href="README_en.md">English</a>
+  简体中文 | <a title="English" href="README-en.md">English</a>
 </div>
 
 让你用自然语言与命令行进行交互。
