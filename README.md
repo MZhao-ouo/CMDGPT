@@ -1,36 +1,50 @@
-# CMDGPT
+<div align="right">
+  <!-- 语言: -->
+  简体中文 | <a title="English" href="README_en.md">English</a>
+</div>
 
-[![Release](https://github.com/MZhao-ouo/CMDGPT/actions/workflows/release.yml/badge.svg)](https://github.com/MZhao-ouo/CMDGPT/actions/workflows/release.yml)
+# CMDGPT [![Release](https://github.com/MZhao-ouo/CMDGPT/actions/workflows/release.yml/badge.svg)](https://github.com/MZhao-ouo/CMDGPT/actions/workflows/release.yml)
 
-A CLI tool to interact with GPT-3.5-turbo
+让你用自然语言与命令行进行交互。
 
 ![cmdgpt演示-_online-video-cutter com_](https://user-images.githubusercontent.com/70903329/227725280-2d22322e-accd-4371-8f1b-51a698566e64.gif)
 
-## Install
+## 安装
 
 ```sh
 pip install cmdgpt
 ```
 
-## Usage
+**如果遇到报错 `command not found: cmdgpt`**
 
-**Set your OpenAI api-key:**
-```sh
-cmdgpt --set_key "sk-xxx……xxx"
-```
-
-**Provide a command:**
-```sh
-cmdgpt "create a folder named 'www' with a file named 'index.html' inside"
-```
-**If `command not found: cmdgpt`**
-
-Add the following line to your `~/.bashrc` or `~/.zshrc` file:
+请将以下内容添加到您的`/.bashrc`或`/.zshrc`文件中：
 ```sh
 export PATH=$PATH:~/.local/bin
 ```
-Then run `source ~/.bashrc` or `source ~/.zshrc` to reload the file.
+然后运行`source ~/.bashrc`或`source ~/.zshrc`重新加载文件。
 
-**Known issues:**
-- Commands such as `cd` and `source` cannot be used
-- CMDGPT on Windows only supports providing commands and cannot execute them.
+## 用法
+
+**设置 OpenAI api-key:**
+```sh
+cmdgpt --key "sk-xxx……xxx"
+```
+
+**自然语言交互**
+```sh
+cmdgpt "创建一个名为www的文件夹，里面有一个index.html文件"
+```
+
+**Chat模式**
+```sh
+cmdgpt --chat
+```
+
+**指定api-url**
+```sh
+cmdgpt --url "你的api-url"
+```
+
+**已知问题**
+- 无法使用`cd`和`source`等命令。
+- Windows上的CMDGPT仅支持提供命令，无法执行命令。
