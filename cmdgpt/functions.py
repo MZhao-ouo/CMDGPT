@@ -17,11 +17,11 @@ def show_help():
 # execute query
 def exec_query(query):
     messages = [
-            {"role": "system", "content": system_prompt},
+            {"role": "system", "content": exec_prompt},
             {"role": "user", "content": prepare_prompt()},
             {"role": "user", "content": query}
         ]
-    response = get_chat_response(messages, apiurl=cmdgpt_conf["apiurl"])
+    response = get_chat_response(messages, temperature=0 ,apiurl=cmdgpt_conf["apiurl"])
     response_contents = decode_chat_response(response)
     try_exec(response_contents)
 
@@ -34,6 +34,9 @@ def try_exec(response_contents):
     print()
     if "MZHAO" in cmd:
         print(Fore.RED + "Please provide a valuable description." + Style.RESET_ALL)
+        return
+    if os.name == "nt":
+        print("Please execute it manually in Windows.")
         return
     if "\n" in cmd:
         print("It is a multi-line command. Please execute it manually.")
@@ -78,6 +81,7 @@ def reset_conf():
 
 # Chat with AI
 def chat_ai():
+    print("Enable chat mode. Press Ctrl+C to exit.")
     terminal_columns = shutil.get_terminal_size().columns
     messages = [
         {"role": "system", "content": "You are a helpful assistant."},
@@ -87,7 +91,7 @@ def chat_ai():
         prompt = input()
         messages.append({"role": "user", "content": prompt})
         print(f"{Fore.YELLOW}===== AI {(terminal_columns-9) * '='}")
-        response = get_chat_response(messages, apiurl=cmdgpt_conf["apiurl"])
+        response = get_chat_response(messages, temperature=0.7, apiurl=cmdgpt_conf["apiurl"])
         response_contents = decode_chat_response(response)
         answer = ""
         for chunk in response_contents:

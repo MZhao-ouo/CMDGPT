@@ -2,8 +2,21 @@ from .presets import *
 
 def init_conf(cmdgpt_conf_path):
     with open(cmdgpt_conf_path, "w+", encoding="utf-8") as f:
-        cmdgpt_conf = {"openai_api_key": ""}
+        cmdgpt_conf = {}
+        cmdgpt_conf["openai_api_key"] = ""
         cmdgpt_conf["apiurl"] = "https://api.openai.com/v1/chat/completions"
+        json.dump(cmdgpt_conf, f)
+    return cmdgpt_conf
+
+def load_conf(cmdgpt_conf_path):
+    with open(cmdgpt_conf_path, "r", encoding="utf-8") as f:
+        cmdgpt_conf = json.load(f)
+        
+    if "openai_api_key" not in cmdgpt_conf:
+        cmdgpt_conf["openai_api_key"] = ""
+    if "apiurl" not in cmdgpt_conf:
+        cmdgpt_conf["apiurl"] = "https://api.openai.com/v1/chat/completions"
+    with open(cmdgpt_conf_path, "w", encoding="utf-8") as f:
         json.dump(cmdgpt_conf, f)
     return cmdgpt_conf
 
