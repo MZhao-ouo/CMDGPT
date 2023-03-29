@@ -51,11 +51,11 @@ cmdgpt --chat
 cmdgpt --api_host "api.openai.com"
 ```
 
-**已知问题**
+## 已知问题
 - 无法使用`cd`和`source`等命令。
 - Windows上的CMDGPT仅支持提供命令，无法执行命令。
 
-**本地调试**
+## 本地调试
 1. Clone本仓库
 ```sh
 git clone https://github.com/MZhao-ouo/CMDGPT.git
