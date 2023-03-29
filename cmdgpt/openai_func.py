@@ -44,17 +44,15 @@ def decode_chat_response(response):
                     continue
 
 
-def get_usage(usage_url="https://api.openai.com/dashboard/billing/credit_grants"):
+def get_billing_data(billing_url):
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {cmdgpt_conf['openai_api_key']}"
     }
-    response = requests.get(usage_url, headers=headers)
+    response = requests.get(billing_url, headers=headers)
     
     if response.status_code == 200:
         data = response.json()
-        total_used = data['total_used']
-        total_granted = data['total_granted']
-        print(f"You have used {Fore.YELLOW}{total_used}$/{total_granted}${Style.RESET_ALL}.")
+        return data
     else:
         raise Exception(f"API request failed with status code {response.status_code}: {response.text}")

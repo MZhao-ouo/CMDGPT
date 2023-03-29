@@ -6,10 +6,13 @@ from .utils import get_cmd_history, load_conf, init_conf
 parser = argparse.ArgumentParser(description="description")
 parser.add_argument("query", nargs="?", help="Describe the command you want.", default=None)
 parser.add_argument("--key", type=str, help="api_key", required=False, default=None)
-parser.add_argument("--usage", action="store_true", help="show OpenAI Usage")
+parser.add_argument("--credit", action="store_true", help="show OpenAI Credit")
 parser.add_argument("--api_host", type=str, help="OpenAI API URL", required=False)
 parser.add_argument("--reset_conf", action="store_true", help="reset the default configuration")
 parser.add_argument("--chat", action="store_true", help="chat with gpt-3.5")
+parser.add_argument("--usage", action="store_true", help="show OpenAI Usage")
+parser.add_argument("--start_date", type=str, help="start date", required=False, default=None)
+parser.add_argument("--end_date", type=str, help="end date", required=False, default=None)
 parser.add_argument('--debug', action='store_true', help='enable debug mode')
 args = parser.parse_args()
 
@@ -46,7 +49,8 @@ else:
     cmdgpt_conf = init_conf(cmdgpt_conf_path)
     
 COMPLETIONS_URL = f"https://{cmdgpt_conf['api_host']}/v1/chat/completions"
-USAGE_URL = f"https://{cmdgpt_conf['api_host']}/dashboard/billing/credit_grants"
+CREDIT_URL = f"https://{cmdgpt_conf['api_host']}/dashboard/billing/credit_grants"
+USAGE_URL = f"https://{cmdgpt_conf['api_host']}/dashboard/billing/usage"
 
 
 if platform.system() == "Windows":

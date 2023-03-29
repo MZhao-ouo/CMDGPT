@@ -13,7 +13,7 @@ setup(
     name="cmdgpt",
     version=__version__,
     packages=find_packages(),
-    description="Interact with the command line using natural language. | 用自然语言操控命令行",
+    description="Interact with the command line using natural language | 用自然语言操控命令行",
     long_description=long_description,
     long_description_content_type="text/markdown",
     install_requires=install_requires,
@@ -27,5 +27,4 @@ setup(
         ],
     },
     include_package_data=True,
-    long_description_content_type="text/markdown",
 )
