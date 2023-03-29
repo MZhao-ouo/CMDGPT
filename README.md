@@ -54,3 +54,33 @@ cmdgpt --api_host "api.openai.com"
 **已知问题**
 - 无法使用`cd`和`source`等命令。
 - Windows上的CMDGPT仅支持提供命令，无法执行命令。
+
+**本地调试**
+1. Clone本仓库
+```sh
+git clone https://github.com/MZhao-ouo/CMDGPT.git
+cd CMDGPT
+```
+
+2. 修改代码，代码位于cmdgpt文件夹
+3. 运行:
+
+先卸载旧版本
+```sh
+pip uninstall cmdgpt -y
+```
+
+生成python模块
+```sh
+python setup.py sdist bdist_wheel
+```
+
+安装本地python模块（注意版本号）
+```sh
+pip install dist/cmdgpt-0.2.3-py3-none-any.whl
+```
+
+或者你可以一键执行
+```sh
+pip uninstall cmdgpt -y | python setup.py sdist bdist_wheel && pip install dist/cmdgpt-0.2.3-py3-none-any.whl
+```
