@@ -1,11 +1,15 @@
-# CMDGPT [![Release](https://github.com/MZhao-ouo/CMDGPT/actions/workflows/release.yml/badge.svg)](https://github.com/MZhao-ouo/CMDGPT/actions/workflows/release.yml) 
-
 <div align="right">
   <!-- 语言: -->
   简体中文 | <a title="English" href="README-en.md">English</a>
 </div>
 
-让你用自然语言与命令行进行交互。
+<img height="128" align="left" src="https://user-images.githubusercontent.com/70903329/228310136-b27cbe83-e7e1-4560-ba75-1b418ba9e5a0.png" alt="Logo">
+
+# CMDGPT | 用自然语言操控命令行
+
+[![Release](https://github.com/MZhao-ouo/CMDGPT/actions/workflows/release.yml/badge.svg)](https://github.com/MZhao-ouo/CMDGPT/actions/workflows/release.yml) 
+[![Version](https://img.shields.io/pypi/v/cmdgpt?label=Release%20Version)](https://pypi.org/project/cmdgpt/) 
+[![Pypi](https://img.shields.io/pypi/dd/cmdgpt?logo=pypi)](https://pypi.org/project/cmdgpt/) 
 
 ![cmdgpt演示-_online-video-cutter com_](https://user-images.githubusercontent.com/70903329/227725280-2d22322e-accd-4371-8f1b-51a698566e64.gif)
 
