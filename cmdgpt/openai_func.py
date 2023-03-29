@@ -44,12 +44,12 @@ def decode_chat_response(response):
                     continue
 
 
-def get_usage():
+def get_usage(usage_url="https://api.openai.com/dashboard/billing/credit_grants"):
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {cmdgpt_conf['openai_api_key']}"
     }
-    response = requests.get("https://api.openai.com/dashboard/billing/credit_grants", headers=headers)
+    response = requests.get(usage_url, headers=headers)
     
     if response.status_code == 200:
         data = response.json()

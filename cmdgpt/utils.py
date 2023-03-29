@@ -4,7 +4,7 @@ def init_conf(cmdgpt_conf_path):
     with open(cmdgpt_conf_path, "w+", encoding="utf-8") as f:
         cmdgpt_conf = {}
         cmdgpt_conf["openai_api_key"] = ""
-        cmdgpt_conf["apiurl"] = "https://api.openai.com/v1/chat/completions"
+        cmdgpt_conf["api_host"] = "api.openai.com"
         json.dump(cmdgpt_conf, f)
     return cmdgpt_conf
 
@@ -12,10 +12,18 @@ def load_conf(cmdgpt_conf_path):
     with open(cmdgpt_conf_path, "r", encoding="utf-8") as f:
         cmdgpt_conf = json.load(f)
         
+    keys_to_delete = []
+    for key in cmdgpt_conf:
+        if key not in ["openai_api_key", "api_host"]:
+            keys_to_delete.append(key)
+    for key in keys_to_delete:
+        del cmdgpt_conf[key]
+    
     if "openai_api_key" not in cmdgpt_conf:
         cmdgpt_conf["openai_api_key"] = ""
-    if "apiurl" not in cmdgpt_conf:
-        cmdgpt_conf["apiurl"] = "https://api.openai.com/v1/chat/completions"
+    elif "api_host" not in cmdgpt_conf:
+        cmdgpt_conf["api_host"] = "api.openai.com"
+        
     with open(cmdgpt_conf_path, "w", encoding="utf-8") as f:
         json.dump(cmdgpt_conf, f)
     return cmdgpt_conf

@@ -19,13 +19,13 @@ def main():
         exit()
     if args.key:
         set_openai_key(args.key)
-    if args.apiurl:
-        set_apiurl(args.apiurl)
+    if args.api_host:
+        set_apihost(args.api_host)
     if args.query:
         exec_query(args.query)
         exit()
     if args.usage:
-        get_usage()
+        get_usage(usage_url=USAGE_URL)
         exit()
 
 if __name__ == "__main__":

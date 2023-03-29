@@ -40,9 +40,11 @@ cmdgpt "创建一个名为www的文件夹，里面有一个index.html文件"
 cmdgpt --chat
 ```
 
-**指定api-url**
+**指定api_host**
+
+你只需要填host即可，例如：
 ```sh
-cmdgpt --url "你的api-url"
+cmdgpt --api_host "api.openai.com"
 ```
 
 **已知问题**
