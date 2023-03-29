@@ -5,7 +5,7 @@
 
 <img height="128" align="left" src="https://user-images.githubusercontent.com/70903329/228310136-b27cbe83-e7e1-4560-ba75-1b418ba9e5a0.png" alt="Logo">
 
-# CMDGPT | 用自然语言操控命令行
+# CMDGPT | 用自然语言操作命令行
 
 [![Release](https://github.com/MZhao-ouo/CMDGPT/actions/workflows/release.yml/badge.svg)](https://github.com/MZhao-ouo/CMDGPT/actions/workflows/release.yml) 
 [![Version](https://img.shields.io/pypi/v/cmdgpt?label=Release%20Version)](https://pypi.org/project/cmdgpt/) 
