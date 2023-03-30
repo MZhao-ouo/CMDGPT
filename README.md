@@ -75,12 +75,12 @@ pip uninstall cmdgpt -y
 python setup.py sdist bdist_wheel
 ```
 
-安装本地python模块（注意版本号）
+安装本地python模块（注意版本号要与./cmdgpt/VERSION一致，且不小于当前版本）
 ```sh
 pip install dist/cmdgpt-0.2.3-py3-none-any.whl
 ```
 
-或者你可以一键执行
+或者你可以一键执行（注意版本号要与./cmdgpt/VERSION一致，且不小于当前版本）
 ```sh
 pip uninstall cmdgpt -y | python setup.py sdist bdist_wheel && pip install dist/cmdgpt-0.2.3-py3-none-any.whl
 ```
