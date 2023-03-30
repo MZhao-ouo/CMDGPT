@@ -80,7 +80,7 @@ def chat_ai():
         prompt = input()
         messages.append({"role": "user", "content": prompt})
         print(f"{Fore.YELLOW}===== AI {(terminal_columns-9) * '='}")
-        response = get_chat_response(messages, temperature=0.7, apiurl=cmdgpt_conf["apiurl"])
+        response = get_chat_response(messages, temperature=0.7, apiurl=COMPLETIONS_URL)
         response_contents = decode_chat_response(response)
         answer = ""
         for chunk in response_contents:
