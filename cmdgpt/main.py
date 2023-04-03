@@ -38,9 +38,9 @@ def main():
     if args.query:
         exec_query(args.query)
         exit()
-    if args.credit:
-        get_credit(credit_url=CREDIT_URL)
-        exit()
+    # if args.credit:
+    #     get_credit(credit_url=CREDIT_URL)
+    #     exit()
     if args.usage:
         get_usage(usage_url=USAGE_URL, start_date=args.start_date, end_date=args.end_date)
         exit()

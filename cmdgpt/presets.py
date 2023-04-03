@@ -6,7 +6,7 @@ from .utils import get_cmd_history, load_conf, init_conf
 parser = argparse.ArgumentParser(description="description")
 parser.add_argument("query", nargs="?", help="Describe the command you want.", default=None)
 parser.add_argument("--key", type=str, help="api_key", required=False, default=None)
-parser.add_argument("--credit", action="store_true", help="show OpenAI Credit")
+# parser.add_argument("--credit", action="store_true", help="show OpenAI Credit")
 parser.add_argument("--api_host", type=str, help="OpenAI API URL", required=False)
 parser.add_argument("--reset_conf", action="store_true", help="reset the default configuration")
 parser.add_argument("--chat", action="store_true", help="chat with gpt-3.5")
