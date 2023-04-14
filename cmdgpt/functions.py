@@ -16,29 +16,32 @@ def exec_query(query):
 
 def try_exec(response_contents):
     cmd = ""
-    print(f"{Fore.BLUE}CMDGPT:{Style.RESET_ALL} Do you want to execute the following command? (y/n):")
+    print(f"{Fore.BLUE}CMDGPT:{Style.RESET_ALL} ")
+    print("Run(R), Cancel(C)", end="", flush=True)
+    print("\x1b[1A\r\x1b[8C", end="")
     for chunk in response_contents:
         print(Fore.YELLOW + chunk + Style.RESET_ALL, end="", flush=True)
         cmd += chunk
-    print()
+    print("\x1b[1B\r\x1b[18C", end="")
     if "MZHAO" in cmd:
-        print(Fore.RED + "Please provide a valuable description." + Style.RESET_ALL)
+        print("\r" + Fore.RED + "Please provide a valuable description." + Style.RESET_ALL)
         return
     if os.name == "nt":
-        print("Please execute it manually in Windows.")
+        print("\r" + "Please execute it manually in Windows.")
         return
     if "\n" in cmd:
-        print("It is a multi-line command. Please execute it manually.")
+        print("\r" + "It is a multi-line command. Please execute it manually.")
         return
     while True:
         pressed_key = get_key()
         if pressed_key:
             pressed_key = pressed_key.lower()
-            if pressed_key == "y":
+            if pressed_key == "r":
+                print("\x1b[1A", end="")
                 os.system(cmd)
                 break
-            elif pressed_key == "n":
-                print("Canceled.")
+            elif pressed_key == "c":
+                print("\rCanceled." + " " * 20)
                 break
 
 # set openai api key
