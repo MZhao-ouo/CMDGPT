@@ -4,7 +4,6 @@ import requests
 def prepare_prompt():
     pre_prompt = ""
     pre_prompt += f"My system infomation is:\n{sys_info}\n"
-    pre_prompt += f"My current shell is:\n{current_shell}\n"
     pre_prompt += f"My current working directory is:\n{cwd_path}\n"
     pre_prompt += f"My command history is:\n{cmd_history}\n"
         

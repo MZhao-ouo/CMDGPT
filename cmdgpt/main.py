@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-from .presets import *
-from .openai_func import *
 from .functions import *
-from .utils import *
 
 def show_help():
     print("Usage:")

@@ -1,28 +1,38 @@
-from .presets import *
 from .openai_func import *
 from .utils import *
-import shutil, datetime
+import datetime
+
+messages = [
+    {"role": "system", "content": exec_prompt},
+    {"role": "user", "content": prepare_prompt()}
+]
     
 # execute query
 def exec_query(query):
-    messages = [
-            {"role": "system", "content": exec_prompt},
-            {"role": "user", "content": prepare_prompt()},
-            {"role": "user", "content": query}
-        ]
+    messages.append({"role": "user", "content": query})
     response = get_chat_response(messages, temperature=0,apiurl=COMPLETIONS_URL)
     response_contents = decode_chat_response(response)
     try_exec(response_contents)
+    
+def explain(command):
+    messages.append({"role": "assistant", "content": command})
+    messages.append({"role": "user", "content": "PEC2MZHAO"})
+    response = get_chat_response(messages, temperature=0,apiurl=COMPLETIONS_URL)
+    response_contents = decode_chat_response(response)
+    print(full_column_str("\rExplanation"))
+    for chunk in response_contents:
+        print(chunk, end="", flush=True)
+    print()
 
 def try_exec(response_contents):
     cmd = ""
     print(f"{Fore.BLUE}CMDGPT:{Style.RESET_ALL} ")
-    print("Run(R), Cancel(C)", end="", flush=True)
+    print("> Run(R), Explain(E), Cancel(C)", end="", flush=True)
     print("\x1b[1A\r\x1b[8C", end="")
     for chunk in response_contents:
         print(Fore.YELLOW + chunk + Style.RESET_ALL, end="", flush=True)
         cmd += chunk
-    print("\x1b[1B\r\x1b[18C", end="")
+    print("\x1b[1B\r\x1b[32C", end="")
     if "MZHAO" in cmd:
         print("\r" + Fore.RED + "Please provide a valuable description." + Style.RESET_ALL)
         return
@@ -40,8 +50,11 @@ def try_exec(response_contents):
                 print("\x1b[1A", end="")
                 os.system(cmd)
                 break
+            elif pressed_key == "e":
+                explain(cmd)
+                print("> Run(R), Cancel(C)", end="", flush=True)
             elif pressed_key == "c":
-                print("\rCanceled." + " " * 20)
+                print(full_column_str("\rCanceled."))
                 break
 
 # set openai api key
@@ -74,7 +87,6 @@ def reset_conf():
 # Chat with AI
 def chat_ai():
     print("Enable chat mode. Press Ctrl+C to exit.")
-    terminal_columns = shutil.get_terminal_size().columns
     messages = [
         {"role": "system", "content": "You are a helpful assistant."},
     ]

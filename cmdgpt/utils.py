@@ -1,5 +1,7 @@
 from .presets import *
 
+terminal_columns = shutil.get_terminal_size().columns
+
 def init_conf(cmdgpt_conf_path):
     with open(cmdgpt_conf_path, "w+", encoding="utf-8") as f:
         cmdgpt_conf = {}
@@ -66,6 +68,9 @@ def get_cmd_history(current_shell, user_home):
             cmd_history += _
     return cmd_history
     
+
+def full_column_str(str):
+    return str + " " * (terminal_columns - len(str))
 
 if os.name == 'nt':  # Windows
     import msvcrt
