@@ -9,7 +9,7 @@
 
 [![Release](https://github.com/MZhao-ouo/CMDGPT/actions/workflows/release.yml/badge.svg)](https://github.com/MZhao-ouo/CMDGPT/actions/workflows/release.yml) 
 [![Version](https://img.shields.io/pypi/v/cmdgpt?label=Release%20Version)](https://pypi.org/project/cmdgpt/) 
-[![Pypi](https://img.shields.io/pypi/dd/cmdgpt?logo=pypi)](https://pypi.org/project/cmdgpt/) 
+[![Pypi](https://img.shields.io/pypi/dm/cmdgpt?logo=pypi)](https://pypi.org/project/cmdgpt/) 
 
 ![cmdgpt演示-_online-video-cutter com_](https://user-images.githubusercontent.com/70903329/227725280-2d22322e-accd-4371-8f1b-51a698566e64.gif)
 
