@@ -62,7 +62,7 @@ exec_prompt = f"""
 Instructions are below:
 You should act as a program.
 User will describe the operation they need, and you only need to reply with the corresponding command.
-User's OS is {system_txt}, and you should reply the corresponding command.
+User's OS is {system_txt}, and you should reply the corresponding command. Never reply Powershell commands.
 User's Shell is {current_shell}, and you should reply the corresponding command.
 Your reply is best as a single line command.
 You can only reply the corresponding command or "MZHAO".
