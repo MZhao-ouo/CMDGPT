@@ -37,9 +37,6 @@ def try_exec(response_contents):
     if "MZHAO" in cmd:
         print("\r" + Fore.RED + "Please provide a valuable description." + Style.RESET_ALL)
         return
-    # if os.name == "nt":
-    #     print("\r" + "Please execute it manually in Windows.")
-    #     return
     if "\n" in cmd:
         print("\r" + "It is a multi-line command. Please execute it manually.")
         return
@@ -48,7 +45,7 @@ def try_exec(response_contents):
         if pressed_key:
             pressed_key = pressed_key.lower()
             if pressed_key == "r":
-                print("\r                                  ", end="")
+                print(full_column_str("\r"), end="")
                 print("\r", end="")
                 subprocess.run(cmd, shell=True)
                 break
