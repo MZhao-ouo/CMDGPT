@@ -11,7 +11,7 @@
 [![Version](https://img.shields.io/pypi/v/cmdgpt?label=Release%20Version)](https://pypi.org/project/cmdgpt/) 
 [![Pypi](https://img.shields.io/pypi/dm/cmdgpt?logo=pypi)](https://pypi.org/project/cmdgpt/) 
 
-![cmdgpt演示-_online-video-cutter com_](https://user-images.githubusercontent.com/70903329/227725280-2d22322e-accd-4371-8f1b-51a698566e64.gif)
+![cmdgpt录屏](https://user-images.githubusercontent.com/70903329/233371797-7cd14240-b6c0-47d9-8e94-f9161b3745a3.gif)
 
 ## 安装
 
