@@ -53,7 +53,7 @@ def process_file(filename):
     
 def get_cmd_history(current_shell, user_home):
     cmd_history = ""
-    if "PowerShell" in current_shell:
+    if "CMD" in current_shell:
         return ""
     elif "zsh" in current_shell:
         history_filename = os.path.join(user_home, ".zsh_history")
